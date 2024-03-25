@@ -1,0 +1,54 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\jakarta\\source\\repos\\Permutation-Based SC Decoding of Polar Subcodes\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{468735A8-0BC6-4870-8260-E868212F4577}|Permutation-Based SC Decoding of Polar Subcodes\\Permutation-Based SC Decoding of Polar Subcodes.vcxproj|C:\\Users\\jakarta\\source\\repos\\Permutation-Based SC Decoding of Polar Subcodes\\Permutation-Based SC Decoding of Polar Subcodes\\Permutation-Based SC Decoding of Polar Subcodes.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{468735A8-0BC6-4870-8260-E868212F4577}|Permutation-Based SC Decoding of Polar Subcodes\\Permutation-Based SC Decoding of Polar Subcodes.vcxproj|solutionrelative:Permutation-Based SC Decoding of Polar Subcodes\\Permutation-Based SC Decoding of Polar Subcodes.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{468735A8-0BC6-4870-8260-E868212F4577}|Permutation-Based SC Decoding of Polar Subcodes\\Permutation-Based SC Decoding of Polar Subcodes.vcxproj|C:\\Users\\jakarta\\source\\repos\\Permutation-Based SC Decoding of Polar Subcodes\\Permutation-Based SC Decoding of Polar Subcodes\\output.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{468735A8-0BC6-4870-8260-E868212F4577}|Permutation-Based SC Decoding of Polar Subcodes\\Permutation-Based SC Decoding of Polar Subcodes.vcxproj|solutionrelative:Permutation-Based SC Decoding of Polar Subcodes\\output.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "output.txt",
+              "DocumentMoniker": "C:\\Users\\jakarta\\source\\repos\\Permutation-Based SC Decoding of Polar Subcodes\\Permutation-Based SC Decoding of Polar Subcodes\\output.txt",
+              "RelativeDocumentMoniker": "Permutation-Based SC Decoding of Polar Subcodes\\output.txt",
+              "ToolTip": "C:\\Users\\jakarta\\source\\repos\\Permutation-Based SC Decoding of Polar Subcodes\\Permutation-Based SC Decoding of Polar Subcodes\\output.txt",
+              "RelativeToolTip": "Permutation-Based SC Decoding of Polar Subcodes\\output.txt",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
+              "WhenOpened": "2024-03-23T16:40:09.764Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Permutation-Based SC Decoding of Polar Subcodes.cpp",
+              "DocumentMoniker": "C:\\Users\\jakarta\\source\\repos\\Permutation-Based SC Decoding of Polar Subcodes\\Permutation-Based SC Decoding of Polar Subcodes\\Permutation-Based SC Decoding of Polar Subcodes.cpp",
+              "RelativeDocumentMoniker": "Permutation-Based SC Decoding of Polar Subcodes\\Permutation-Based SC Decoding of Polar Subcodes.cpp",
+              "ToolTip": "C:\\Users\\jakarta\\source\\repos\\Permutation-Based SC Decoding of Polar Subcodes\\Permutation-Based SC Decoding of Polar Subcodes\\Permutation-Based SC Decoding of Polar Subcodes.cpp*",
+              "RelativeToolTip": "Permutation-Based SC Decoding of Polar Subcodes\\Permutation-Based SC Decoding of Polar Subcodes.cpp*",
+              "ViewState": "AQIAAEUDAAAAAAAAAAAAAE0DAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-03-23T16:37:31.124Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
