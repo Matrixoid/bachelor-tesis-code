@@ -1,5 +1,0 @@
-8 4 0.5 16
-Encode 1 1 1 1
-Decode -0.5 1 1 1 -1 -1 -1 -1
-Simulate 0 100000 100
-Simulate 4 100000 100
