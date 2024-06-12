@@ -108,7 +108,7 @@ private:
     }
     void generate_permutations(int* cur_perm, int k, int max_permutations)
     {
-        std::ofstream file = open_file();
+        //std::ofstream file = open_file();
         if (k == m)
         {
             int* bit_perm = bit_permutation(cur_perm);
@@ -116,7 +116,7 @@ private:
                 std::cout << bit_perm[i] << " ";
             }*/
             double prob = permutation_prob_compute(bit_perm);
-            print_permutation_to_file(file, bit_perm, prob);
+            //print_permutation_to_file(file, bit_perm, prob);
             delete[] bit_perm;
             if (permutations_index >= max_permutations) {
                 int min_index = 0;
@@ -149,7 +149,7 @@ private:
                 swap(cur_perm, k, j);
             }
         }
-        close_file(file);
+        //close_file(file);
     }
 
     void generate_permutations(int max_permutations) {
@@ -610,7 +610,6 @@ private:
         delete[] inactive_array_indices;
         delete[] array_pointer_P;
         delete[] array_pointer_C;
-        delete[] frozen_bits_values;
     }
 
     float* erasure_probabilities;
@@ -791,6 +790,9 @@ public:
         int* res = new int[n];
         for (int i = 0; i < permutation_count; i++) {
             float* L_tmp = get_permutation(L, bit_permutation(permutations[i]));
+            /*for (int j = 0; j < n; j++) {
+                std::cout << L_tmp[j] << " ";
+            }*/
             int* dec = decoding(L_tmp);
             double cur_metric = compute_metric(dec);
             if (cur_metric > metric) {
@@ -806,6 +808,7 @@ public:
     ~PolarCodes() {
         delete[] F;
         delete[] erasure_probabilities;
+        delete[] frozen_bits_values;
     }
 
     int n;
