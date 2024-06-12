@@ -16,7 +16,7 @@ enum command_type {
 struct command {
 
     command() = default;
-    command(command_type ct, std::vector<float> vector) : com(ct), vec(vector) {}
+    command(command_type ct, std::vector<double> vector) : com(ct), vec(vector) {}
 
     void clear() {
         vec.clear();
@@ -51,7 +51,7 @@ struct command {
             cmd.com = command_type::Simulate;
 
         while (!ss.eof()) {
-            float a;
+            double a;
             ss >> a;
             cmd.vec.push_back(a);
         }
@@ -59,7 +59,7 @@ struct command {
     }
 
     command_type com;
-    std::vector<float> vec;
+    std::vector<double> vec;
 };
 
 struct PolarCodes {
@@ -103,15 +103,10 @@ private:
     }
     void generate_permutations(int* cur_perm, int k, int max_permutations)
     {
-        //std::ofstream file = open_file();
         if (k == m)
         {
             int* bit_perm = bit_permutation(cur_perm);
-            /*for (int i = 0; i < n; i++) {
-                std::cout << bit_perm[i] << " ";
-            }*/
             double prob = permutation_prob_compute(bit_perm);
-            //print_permutation_to_file(file, bit_perm, prob);
             delete[] bit_perm;
             if (permutations_index >= max_permutations) {
                 int min_index = 0;
@@ -144,13 +139,12 @@ private:
                 swap(cur_perm, k, j);
             }
         }
-        //close_file(file);
     }
 
     void generate_permutations(int max_permutations) {
         int* arr = new int[m];
-        permutations_prob = new int[max_permutations];
-        permutations = new int*[max_permutations];
+        permutations_prob = new double[max_permutations];
+        permutations = new int* [max_permutations];
         permutations_index = 0;
         for (int i = 0; i < m; i++) {
             arr[i] = i;
@@ -160,8 +154,8 @@ private:
         delete[] arr;
     }
 
-    float* get_permutation(float* L, int* permutation) {
-        float* res = new float[n];
+    double* get_permutation(double* L, int* permutation) {
+        double* res = new double[n];
         for (int i = 0; i < n; i++) {
             res[i] = L[permutation[i]];
         }
@@ -169,8 +163,8 @@ private:
         return res;
     }
 
-    float* erasure_probabilities_compute(int n, float p) {
-        float* res = new float[(m + 1) * n];
+    double* erasure_probabilities_compute(int n, double p) {
+        double* res = new double[(m + 1) * n];
         int l = n;
 
         int layer = 0;
@@ -198,8 +192,8 @@ private:
         return res;
     }
 
-    bool* find_k_mins(int k, const float* probabilities) {
-        std::vector<std::pair<int, float>> tmp;
+    bool* find_k_mins(int k, const double* probabilities) {
+        std::vector<std::pair<int, double>> tmp;
         bool* res = new bool[n];
 
         for (int i = 0; i < n; i++) {
@@ -207,7 +201,7 @@ private:
             res[i] = true;
         }
 
-        std::sort(tmp.begin(), tmp.end(), [](std::pair<int, float> a, std::pair<int, float> b) { return a.second < b.second; });
+        std::sort(tmp.begin(), tmp.end(), [](std::pair<int, double> a, std::pair<int, double> b) { return a.second < b.second; });
 
         for (int i = 0; i < k; i++) {
             res[tmp[i].first] = false;
@@ -282,7 +276,7 @@ private:
         inactive_path_indices = new int[list_size];
         inactive_path_indices_size = list_size;
         active_path = new bool[list_size];
-        array_pointer_P = new float** [m + 1];
+        array_pointer_P = new double** [m + 1];
         array_pointer_C = new bool** [m + 1];
         path_index_to_array_index = new int* [m + 1];
         inactive_array_indices = new int* [m + 1];
@@ -292,10 +286,10 @@ private:
         for (int lambda = 0; lambda < m + 1; lambda++) {
             inactive_array_indices[lambda] = new int[list_size];
             inactive_array_indices_sizes[lambda] = list_size;
-            array_pointer_P[lambda] = new float* [list_size];
+            array_pointer_P[lambda] = new double* [list_size];
             array_pointer_C[lambda] = new bool* [list_size];
             for (int s = 0; s < list_size; s++) {
-                array_pointer_P[lambda][s] = new float[2 * (1 << (m - lambda))];
+                array_pointer_P[lambda][s] = new double[2 * (1 << (m - lambda))];
                 array_pointer_C[lambda][s] = new bool[2 * (1 << (m - lambda))];
                 for (int i = 0; i < 2 * (1 << (m - lambda)); i++) {
                     array_pointer_P[lambda][s][i] = 0;
@@ -354,7 +348,7 @@ private:
         }
     }
 
-    float* get_array_pointer_P(int lambda, int l) {
+    double* get_array_pointer_P(int lambda, int l) {
         int s = path_index_to_array_index[lambda][l];
         int s1;
         if (array_references_count[lambda][s] == 1) {
@@ -408,13 +402,13 @@ private:
         if (phase % 2 == 0) {
             recursively_calc_P(lambda - 1, psi);
         }
-        float sig = 0;
+        double sig = 0;
         for (int l = 0; l < list_size; l++) {
             if (!active_path[l]) {
                 continue;
             }
-            float* Pl = get_array_pointer_P(lambda, l);
-            float* Pl1 = get_array_pointer_P(lambda - 1, l);
+            double* Pl = get_array_pointer_P(lambda, l);
+            double* Pl1 = get_array_pointer_P(lambda - 1, l);
             bool* Cl = get_array_pointer_C(lambda, l);
 
             for (int b = 0; b < (1 << (m - lambda)); b++) {
@@ -428,7 +422,7 @@ private:
                     int u = (Cl[2 * b]) ? 1 : 0;
                     for (int uu = 0; uu < 2; uu++) {
                         Pl[2 * b + uu] = 0.5 * Pl1[2 * (2 * b) + (u xor uu)] * Pl1[2 * (2 * b + 1) + uu];
-                        sig = std::max(sig, Pl[2 * b + uu]);    
+                        sig = std::max(sig, Pl[2 * b + uu]);
                     }
                 }
             }
@@ -437,7 +431,7 @@ private:
             if (!active_path[l]) {
                 continue;
             }
-            float* Pl = get_array_pointer_P(lambda, l);
+            double* Pl = get_array_pointer_P(lambda, l);
             for (int b = 0; b < (1 << (m - lambda)); b++) {
                 Pl[2 * b] /= sig;
                 Pl[2 * b + 1] /= sig;
@@ -476,12 +470,12 @@ private:
     }
 
     void continue_paths_unfrozen_bit(int phase) {
-     
-        std::vector<std::pair<float, int>> tmp;
+
+        std::vector<std::pair<double, int>> tmp;
         int i = 0;
         for (int l = 0; l < list_size; l++) {
             if (active_path[l]) {
-                float* Pm = get_array_pointer_P(m, l);
+                double* Pm = get_array_pointer_P(m, l);
                 tmp.emplace_back(Pm[0], l + 1);
                 tmp.emplace_back(Pm[1], -(l + 1));
                 i++;
@@ -490,9 +484,9 @@ private:
         int p = std::min(2 * i, list_size);
         std::sort(tmp.rbegin(), tmp.rend());
 
-        bool** continue_forks = new bool*[list_size];
+        bool** continue_forks = new bool* [list_size];
         for (int i = 0; i < list_size; i++) {
-            continue_forks[i] = new bool[2]{ false, false };
+            continue_forks[i] = new bool[2] { false, false };
         }
         for (int j = 0; j < p; j++) {
             if (tmp[j].second > 0) {
@@ -611,7 +605,7 @@ private:
         delete[] array_pointer_C;
     }
 
-    float* erasure_probabilities;
+    double* erasure_probabilities;
     int** frozen_bits_restrictions;
     bool* F;
     int* frozen_bits_values;
@@ -619,19 +613,19 @@ private:
     int* inactive_path_indices;
     int inactive_path_indices_size;
     bool* active_path;
-    float*** array_pointer_P;
+    double*** array_pointer_P;
     bool*** array_pointer_C;
     int** path_index_to_array_index;
     int** inactive_array_indices;
     int* inactive_array_indices_sizes;
     int** array_references_count;
     int** permutations;
-    int* permutations_prob;
+    double* permutations_prob;
     int permutations_index;
 public:
     PolarCodes() = default;
 
-    PolarCodes(int n, int k, float prob, int list_size) : n(n),
+    PolarCodes(int n, int k, double prob, int list_size) : n(n),
         k(k),
         prob(prob),
         list_size(list_size),
@@ -735,10 +729,10 @@ public:
         return res;
     }
 
-    int* decoding(float* L) {
+    int* decoding(double* L) {
         initialize_data_structures();
         int l = assign_initial_path();
-        float* P0 = get_array_pointer_P(0, l);
+        double* P0 = get_array_pointer_P(0, l);
 
         for (int b = 0; b < n; b++) {
             int idX = get_reversed(b);
@@ -760,14 +754,14 @@ public:
         frozen_bits_values_index = 0;
 
         int l1 = 0;
-        float pp = 0;
+        double pp = 0;
         for (int l = 0; l < list_size; l++) {
             if (!active_path[l]) {
                 continue;
             }
 
             bool* Cm = get_array_pointer_C(m, l);
-            float* Pm = get_array_pointer_P(m, l);
+            double* Pm = get_array_pointer_P(m, l);
 
             if (pp < Pm[Cm[1]]) {
                 l1 = l;
@@ -784,11 +778,11 @@ public:
         return res;
     }
 
-    int* decoding(float* L, int permutation_count) {
+    int* decoding(double* L, int permutation_count) {
         int metric = -10000000;
         int* res = new int[n];
         for (int i = 0; i < permutation_count; i++) {
-            float* L_tmp = get_permutation(L, bit_permutation(permutations[i]));
+            double* L_tmp = get_permutation(L, bit_permutation(permutations[i]));
             int* dec = decoding(L_tmp);
             delete[] L_tmp;
             double cur_metric = compute_metric(dec);
@@ -810,7 +804,7 @@ public:
 
     int n;
     int k;
-    float prob;
+    double prob;
     int m;
     int d;
     int s;
@@ -840,7 +834,7 @@ void encode_command_execute(command com, PolarCodes& pc, std::ofstream& output_f
 }
 
 void decode_command_execute(command com, int permutation_count, PolarCodes& pc, std::ofstream& output_file) {
-    float* L = new float[pc.n];
+    double* L = new double[pc.n];
     for (int i = 0; i < pc.n; i++) {
         L[i] = com.vec[i];
     }
@@ -853,14 +847,14 @@ void decode_command_execute(command com, int permutation_count, PolarCodes& pc, 
     delete[] dec;
 }
 
-void simulate_command_execute(float snrb, int num_of_simulations, int max_errors, int permutation_count, PolarCodes& pc, std::ostream& output_file) {
+void simulate_command_execute(double snrb, int num_of_simulations, int max_errors, int permutation_count, PolarCodes& pc, std::ostream& output_file) {
     std::random_device rd{};
     std::mt19937 gen{ rd() };
     auto gen_b = std::bind(std::uniform_int_distribution<>(0, 1), std::default_random_engine());
 
-    float snr = pow(10, -snrb / 10);
+    double snr = pow(10, -snrb / 10);
     snr = snr * pc.n / (pc.k + 50);
-    float sigma = sqrt(0.5 * snr);
+    double sigma = sqrt(0.5 * snr);
     std::normal_distribution<> nd{ 0, sigma };
 
     int errs = 0;
@@ -873,7 +867,7 @@ void simulate_command_execute(float snrb, int num_of_simulations, int max_errors
         int* enc = pc.encoding(b);
         delete[] b;
 
-        float* L = new float[pc.n];
+        double* L = new double[pc.n];
         for (int i = 0; i < pc.n; i++) {
             L[i] = 1 - 2 * enc[i] + nd(gen);
         }
@@ -892,7 +886,7 @@ void simulate_command_execute(float snrb, int num_of_simulations, int max_errors
         if (errs >= max_errors)
             break;
     }
-    output_file << (float)errs / iters << "\n";
+    output_file << (double)errs / iters << "\n";
 }
 
 int main()
@@ -939,7 +933,7 @@ int main()
                 std::cout << "List size = " << lst << "\n";
                 PolarCodes pc = PolarCodes(m, k, d, n, s, p, lst, frozen_bits_restrictions, 0.5);
 
-                for (float snrb = 0.5; snrb <= 2.5; snrb += 0.25) {
+                for (double snrb = 0.5; snrb <= 2.5; snrb += 0.25) {
                     clock_t start, end;
                     start = clock();
                     std::cout << "snrb = " << snrb << ": ";
@@ -948,7 +942,7 @@ int main()
 
                     simulate_command_execute(snrb, num_of_simulations, max_errors, prm_cnt, pc, std::cout);
                     end = clock();
-                    std::cout << (float)(end - start) / ((float)CLOCKS_PER_SEC) << "\n";
+                    std::cout << (double)(end - start) / ((double)CLOCKS_PER_SEC) << "\n";
                 }
                 std::cout << "\n\n";
             }
@@ -964,7 +958,7 @@ int main()
         std::ifstream input_file;
         input_file.open(input_file_name);
         int n, k;
-        float p;
+        double p;
         int list_size;
         if (input_file.is_open())
             input_file >> n >> k >> p >> list_size;
