@@ -65,20 +65,15 @@ struct command {
 struct PolarCodes {
 private:
 
-    std::ofstream open_file() {
+    void print_permutations_to_file() {
         std::ofstream file;
         file.open("permutations.txt");
-        return file;
-    }
-
-    void print_permutation_to_file(std::ofstream& file, int* permutation, double prob) {
-        for (int i = 0; i < n; i++) {
-            file << permutation[i] << " ";
+        for (int i = 0; i < 64; i++) {
+            for (int j = 0; j < n; j++) {
+                file << permutations[i][j] << " ";
+            }
+            file << permutations_prob[i] << "\n";
         }
-        file << prob << "\n";
-    }
-
-    void close_file(std::ofstream& file) {
         file.close();
     }
 
@@ -538,6 +533,9 @@ private:
                 }
             }
         }
+        for (int i = 0; i < list_size; i++) {
+            delete[] continue_forks[i];
+        }
         delete[] continue_forks;
     }
 
@@ -579,6 +577,7 @@ private:
             }
         }
         res += std::min(0.0, y[0]);
+        delete[] y;
         return res;
     }
 
@@ -790,10 +789,8 @@ public:
         int* res = new int[n];
         for (int i = 0; i < permutation_count; i++) {
             float* L_tmp = get_permutation(L, bit_permutation(permutations[i]));
-            /*for (int j = 0; j < n; j++) {
-                std::cout << L_tmp[j] << " ";
-            }*/
             int* dec = decoding(L_tmp);
+            delete[] L_tmp;
             double cur_metric = compute_metric(dec);
             if (cur_metric > metric) {
                 metric = cur_metric;
@@ -862,7 +859,7 @@ void simulate_command_execute(float snrb, int num_of_simulations, int max_errors
     auto gen_b = std::bind(std::uniform_int_distribution<>(0, 1), std::default_random_engine());
 
     float snr = pow(10, -snrb / 10);
-    snr = snr * pc.n / (pc.k);
+    snr = snr * pc.n / (pc.k + 50);
     float sigma = sqrt(0.5 * snr);
     std::normal_distribution<> nd{ 0, sigma };
 
@@ -910,7 +907,7 @@ int main()
 
         std::ifstream input_file;
         input_file.open(input_file_name);
-        int m, k, d, n, s, p;
+        int m = 0, k = 0, d = 0, n = 0, s = 0, p = 0;
         if (input_file.is_open())
             input_file >> m >> k >> d >> n >> s >> p;
 
