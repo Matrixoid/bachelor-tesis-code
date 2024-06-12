@@ -65,6 +65,23 @@ struct command {
 struct PolarCodes {
 private:
 
+    std::ofstream open_file() {
+        std::ofstream file;
+        file.open("permutations.txt");
+        return file;
+    }
+
+    void print_permutation_to_file(std::ofstream& file, int* permutation, double prob) {
+        for (int i = 0; i < n; i++) {
+            file << permutation[i] << " ";
+        }
+        file << prob << "\n";
+    }
+
+    void close_file(std::ofstream& file) {
+        file.close();
+    }
+
     int* bit_permutation(int* permutation) {
         int* res = new int[n];
         for (int i = 0; i < n; i++) {
@@ -91,10 +108,16 @@ private:
     }
     void generate_permutations(int* cur_perm, int k, int max_permutations)
     {
+        std::ofstream file = open_file();
         if (k == m)
         {
             int* bit_perm = bit_permutation(cur_perm);
+            /*for (int i = 0; i < n; i++) {
+                std::cout << bit_perm[i] << " ";
+            }*/
             double prob = permutation_prob_compute(bit_perm);
+            print_permutation_to_file(file, bit_perm, prob);
+            delete[] bit_perm;
             if (permutations_index >= max_permutations) {
                 int min_index = 0;
                 int min_prob = permutations_prob[0];
@@ -105,7 +128,9 @@ private:
                     }
                 }
                 if (prob > min_prob) {
-                    delete[] permutations[min_index];
+                    if (permutations[min_index]) {
+                        delete[] permutations[min_index];
+                    }
                     permutations[min_index] = cur_perm;
                     permutations_prob[min_index] = prob;
                 }
@@ -124,18 +149,20 @@ private:
                 swap(cur_perm, k, j);
             }
         }
+        close_file(file);
     }
 
     void generate_permutations(int max_permutations) {
         int* arr = new int[m];
         permutations_prob = new int[max_permutations];
-        permutations = new int* [max_permutations];
+        permutations = new int*[max_permutations];
         permutations_index = 0;
         for (int i = 0; i < m; i++) {
             arr[i] = i;
         }
 
         generate_permutations(arr, 0, max_permutations);
+        delete[] arr;
     }
 
     float* get_permutation(float* L, int* permutation) {
@@ -406,7 +433,7 @@ private:
                     int u = (Cl[2 * b]) ? 1 : 0;
                     for (int uu = 0; uu < 2; uu++) {
                         Pl[2 * b + uu] = 0.5 * Pl1[2 * (2 * b) + (u xor uu)] * Pl1[2 * (2 * b + 1) + uu];
-                        sig = std::max(sig, Pl[2 * b + uu]);
+                        sig = std::max(sig, Pl[2 * b + uu]);    
                     }
                 }
             }
@@ -454,7 +481,7 @@ private:
     }
 
     void continue_paths_unfrozen_bit(int phase) {
-
+     
         std::vector<std::pair<float, int>> tmp;
         int i = 0;
         for (int l = 0; l < list_size; l++) {
@@ -468,9 +495,9 @@ private:
         int p = std::min(2 * i, list_size);
         std::sort(tmp.rbegin(), tmp.rend());
 
-        bool** continue_forks = new bool* [list_size];
+        bool** continue_forks = new bool*[list_size];
         for (int i = 0; i < list_size; i++) {
-            continue_forks[i] = new bool[2] { false, false };
+            continue_forks[i] = new bool[2]{ false, false };
         }
         for (int j = 0; j < p; j++) {
             if (tmp[j].second > 0) {
@@ -652,7 +679,7 @@ public:
                 F[i] = false;
             }
         }
-        generate_permutations(128);
+        generate_permutations(64);
     }
 
     int* get_frozen_bits() {
